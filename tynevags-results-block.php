@@ -39,6 +39,39 @@ add_action( 'init', 'tynevags_results_block_register' );
 
 // Render callback for dynamic results block
 function tynevags_results_block_render( $attributes, $content ) {
-	// Placeholder: fetch and display results dynamically
-	return '<div class="tynevags-results-block">Results will appear here. (Dynamic output coming soon.)</div>';
+	global $wpdb;
+	$view = $wpdb->prefix . 'race_links_view';
+	$results = $wpdb->get_results( "SELECT * FROM $view ORDER BY date DESC" );
+	if ( empty( $results ) ) {
+		return '<div class="tynevags-results-block">No results found.</div>';
+	}
+
+	$output = '<div class="tynevags-results-block">';
+	$current_year = null;
+	$latest = true;
+	foreach ( $results as $row ) {
+		$year = date( 'Y', strtotime( $row->date ) );
+		if ( $year !== $current_year ) {
+			if ( $current_year !== null ) {
+				$output .= '</ul>';
+			}
+			$output .= '<h3>' . esc_html( $year ) . '</h3><ul>';
+			$current_year = $year;
+		}
+		$link_text = date( 'j M', strtotime( $row->date ) ) . ' - ' . esc_html( $row->distance ) . ' Mile ' . esc_html( $row->event_type ) . ' (' . esc_html( $row->course ) . ')';
+		$link_url = add_query_arg( array(
+			'date' => date( 'Ymd', strtotime( $row->date ) ),
+			'distance' => $row->distance,
+			'event_type' => $row->event_type,
+			'course' => $row->course,
+		), get_permalink() );
+		$output .= '<li>';
+		if ( $latest ) {
+			$output .= '<strong>LATEST: </strong>';
+			$latest = false;
+		}
+		$output .= '<a href="' . esc_url( $link_url ) . '">' . esc_html( $link_text ) . '</a></li>';
+	}
+	$output .= '</ul></div>';
+	return $output;
 }
