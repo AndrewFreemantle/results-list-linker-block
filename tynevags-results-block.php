@@ -21,7 +21,7 @@ function tynevags_results_block_enqueue_assets() {
 	);
 	wp_enqueue_style(
 		'tynevags-results-block-style',
-		plugins_url( 'build/style.css', __FILE__ ),
+		plugins_url( 'build/style-index.css', __FILE__ ),
 		array(),
 		'0.1.0'
 	);

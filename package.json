@@ -1,0 +1,15 @@
+{
+  "name": "tynevags-results-block",
+  "version": "0.1.0",
+  "description": "WordPress block plugin for displaying event results with advanced filtering.",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  },
+  "author": "Your Name",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/scripts": "^27.1.0"
+  }
+}
