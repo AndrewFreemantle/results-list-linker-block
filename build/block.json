@@ -1,0 +1,23 @@
+{
+  "apiVersion": 2,
+  "name": "tynevags/results-block",
+  "title": "Tynevags Results Block",
+  "category": "widgets",
+  "icon": "awards",
+  "description": "Adds a block to display event results with advanced filtering, year grouping, and compatibility with Neve and Elementor.",
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "resultsPage": {
+      "type": "string",
+      "default": ""
+    },
+    "filters": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}
