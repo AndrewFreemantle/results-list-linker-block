@@ -31,6 +31,10 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Bb]uild/
+
+# Ignore build output and packaged plugin
+*.zip
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -398,3 +402,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Ignore logs and system files
+npm-debug.log*
+.DS_Store

@@ -23,6 +23,7 @@ registerBlockType('tynevags/results-block', {
                     columnIndex: { type: 'integer' },
                     filterValue: { type: 'string' },
                     isRange: { type: 'boolean' },
+                    isEscaped: { type: 'boolean', default: true },
                 },
             },
         },
@@ -95,6 +96,14 @@ registerBlockType('tynevags/results-block', {
                                             onChange={(e) => updateFilter(idx, 'isRange', e.target.checked)}
                                         />{' '}
                                         {__('Range', 'tynevags-results-block')}
+                                    </label>
+                                    <label style={{ display: 'block', marginTop: 4 }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={!!filter.isEscaped}
+                                            onChange={(e) => updateFilter(idx, 'isEscaped', e.target.checked)}
+                                        />{' '}
+                                        {__('Escaped', 'tynevags-results-block')}
                                     </label>
                                     <button type="button" onClick={() => removeFilter(idx)} style={{ marginTop: 4 }}>
                                         {__('Remove', 'tynevags-results-block')}
