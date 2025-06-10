@@ -4,6 +4,8 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
 
 registerBlockType('tynevags/results-block', {
     apiVersion: 2,
@@ -30,12 +32,18 @@ registerBlockType('tynevags/results-block', {
         const blockProps = useBlockProps();
         const [filterPairs, setFilterPairs] = useState(attributes.filters || []);
 
-        // Placeholder: Replace with dynamic page list fetch if needed
-        const pageOptions = [
-            { label: 'Select a page', value: '' },
-            { label: 'Results Page', value: '/results/' },
-            { label: 'Events Page', value: '/events/' },
-        ];
+        // Fetch pages from WordPress
+        const pages = useSelect(
+            (select) => select(coreStore).getEntityRecords('postType', 'page', { per_page: 100 }),
+            []
+        );
+        const isLoadingPages = pages === undefined;
+        const pageOptions = isLoadingPages
+            ? [{ label: 'Loading...', value: '' }]
+            : [
+                { label: 'Select a page', value: '' },
+                ...pages.map((page) => ({ label: page.title.rendered || page.slug, value: page.id }))
+            ];
 
         const updateFilter = (index, field, value) => {
             const newFilters = [...filterPairs];

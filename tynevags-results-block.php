@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Tynevags Results Block
-Description: Adds a block to display event results with advanced filtering, year grouping, and compatibility with Neve and Elementor.
-Version: 0.1.0
-Author: Your Name
+Description: WordPress block plugin for displaying race result links.
+Version: 0.1.1
+Author: Andrew Freemantle
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,7 +40,7 @@ add_action( 'init', 'tynevags_results_block_register' );
 // Render callback for dynamic results block
 function tynevags_results_block_render( $attributes, $content ) {
 	global $wpdb;
-	$view = $wpdb->prefix . 'race_links_view';
+	$view = 'race_links_view';
 	$results = $wpdb->get_results( "SELECT * FROM $view ORDER BY date DESC" );
 	if ( empty( $results ) ) {
 		return '<div class="tynevags-results-block">No results found.</div>';
@@ -55,7 +55,7 @@ function tynevags_results_block_render( $attributes, $content ) {
 			if ( $current_year !== null ) {
 				$output .= '</ul>';
 			}
-			$output .= '<h3>' . esc_html( $year ) . '</h3><ul>';
+			$output .= '<h3 class="tynevags-results-block__year">' . esc_html( $year ) . '</h3><ul class="tynevags-results-block__list">';
 			$current_year = $year;
 		}
 		$link_text = date( 'j M', strtotime( $row->date ) ) . ' - ' . esc_html( $row->distance ) . ' Mile ' . esc_html( $row->event_type ) . ' (' . esc_html( $row->course ) . ')';

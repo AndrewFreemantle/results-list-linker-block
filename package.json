@@ -1,13 +1,13 @@
 {
   "name": "tynevags-results-block",
-  "version": "0.1.0",
-  "description": "WordPress block plugin for displaying event results with advanced filtering.",
+  "version": "0.1.1",
+  "description": "WordPress block plugin for displaying race result links.",
   "main": "build/index.js",
   "scripts": {
     "build": "wp-scripts build",
     "start": "wp-scripts start"
   },
-  "author": "Your Name",
+  "author": "Andrew Freemantle",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@wordpress/scripts": "^27.1.0"
