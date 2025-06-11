@@ -1,7 +1,3 @@
-.results-list-linker-block {
-    border: 1px solid #ddd;
-    padding: 1em;
-    background: #fafbfc;
-    border-radius: 4px;
-    margin-bottom: 1em;
-}
+.results-list-linker-block { /* Container for the results list block */ }
+.results-list-linker-block__year { /* Year heading for grouped results */ }
+.results-list-linker-block__list { /* List of result links for a year */ }
