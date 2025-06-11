@@ -4,6 +4,7 @@ Plugin Name: Results List Linker Block
 Description: WordPress block plugin for displaying a list of results as links.
 Version: 0.1.5
 Author: Andrew Freemantle
+Author URI: https://github.com/AndrewFreemantle/results-list-linker-block
 */
 
 // NOTE: The following code must be run within a WordPress environment.
