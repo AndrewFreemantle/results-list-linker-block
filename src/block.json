@@ -1,10 +1,10 @@
 {
   "apiVersion": 2,
-  "name": "tynevags/results-block",
-  "title": "Tynevags Results Block",
+  "name": "results-list-linker/results-block",
+  "title": "Results List Linker Block",
   "category": "widgets",
   "icon": "awards",
-  "description": "WordPress block plugin for displaying race result links.",
+  "description": "WordPress block plugin for displaying a list of results as links.",
   "supports": {
     "html": false
   },

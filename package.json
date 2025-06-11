@@ -1,12 +1,12 @@
 {
-  "name": "tynevags-results-block",
+  "name": "results-list-linker-block",
   "version": "0.1.4",
-  "description": "WordPress block plugin for displaying race result links.",
+  "description": "WordPress block plugin for displaying a list of results as links.",
   "main": "build/index.js",
   "scripts": {
     "build": "wp-scripts build",
     "start": "wp-scripts start",
-    "package": "npm run build && zip -r tynevags-results-block.zip tynevags-results-block.php build LICENSE"
+    "package": "npm run build && zip -r results-list-linker-block.zip results-list-linker-block.php build LICENSE"
   },
   "author": "Andrew Freemantle",
   "license": "GPL-2.0-or-later",

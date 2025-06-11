@@ -7,9 +7,9 @@ import { useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 
-registerBlockType('tynevags/results-block', {
+registerBlockType('results-list-linker/results-block', {
     apiVersion: 2,
-    title: __('Tynevags Results Block', 'tynevags-results-block'),
+    title: __('Results List Linker Block', 'results-list-linker-block'),
     icon: 'awards',
     category: 'widgets',
     attributes: {
@@ -68,57 +68,57 @@ registerBlockType('tynevags/results-block', {
         return (
             <>
                 <InspectorControls>
-                    <PanelBody title={__('Block Settings', 'tynevags-results-block')} initialOpen={true}>
+                    <PanelBody title={__('Block Settings', 'results-list-linker-block')} initialOpen={true}>
                         <SelectControl
-                            label={__('Results Page', 'tynevags-results-block')}
+                            label={__('Results Page', 'results-list-linker-block')}
                             value={attributes.resultsPage}
                             options={pageOptions}
                             onChange={(value) => setAttributes({ resultsPage: value })}
                         />
-                        <PanelBody title={__('Filter Parameters', 'tynevags-results-block')} initialOpen={true}>
-                            {filterPairs.map((filter, idx) => (
-                                <div key={idx} style={{ borderBottom: '1px solid #eee', marginBottom: 8, paddingBottom: 8 }}>
-                                    <TextControl
-                                        label={__('Column Index', 'tynevags-results-block')}
-                                        type="number"
-                                        value={filter.columnIndex}
-                                        onChange={(value) => updateFilter(idx, 'columnIndex', value)}
-                                    />
-                                    <TextControl
-                                        label={__('Filter Value', 'tynevags-results-block')}
-                                        value={filter.filterValue}
-                                        onChange={(value) => updateFilter(idx, 'filterValue', value)}
-                                    />
-                                    <label style={{ display: 'block', marginTop: 4 }}>
-                                        <input
-                                            type="checkbox"
-                                            checked={!!filter.isRange}
-                                            onChange={(e) => updateFilter(idx, 'isRange', e.target.checked)}
-                                        />{' '}
-                                        {__('Range', 'tynevags-results-block')}
-                                    </label>
-                                    <label style={{ display: 'block', marginTop: 4 }}>
-                                        <input
-                                            type="checkbox"
-                                            checked={!!filter.isEscaped}
-                                            onChange={(e) => updateFilter(idx, 'isEscaped', e.target.checked)}
-                                        />{' '}
-                                        {__('Escaped', 'tynevags-results-block')}
-                                    </label>
-                                    <button type="button" onClick={() => removeFilter(idx)} style={{ marginTop: 4 }}>
-                                        {__('Remove', 'tynevags-results-block')}
-                                    </button>
-                                </div>
-                            ))}
-                            <button type="button" onClick={addFilter} style={{ marginTop: 8 }}>
-                                {__('Add Filter', 'tynevags-results-block')}
-                            </button>
-                        </PanelBody>
+                    </PanelBody>
+                    <PanelBody title={__('Filter Parameters', 'results-list-linker-block')} initialOpen={true}>
+                        {filterPairs.map((filter, idx) => (
+                            <div key={idx} style={{ borderBottom: '1px solid #eee', marginBottom: 8, paddingBottom: 8 }}>
+                                <TextControl
+                                    label={__('Column Index', 'results-list-linker-block')}
+                                    type="number"
+                                    value={filter.columnIndex}
+                                    onChange={(value) => updateFilter(idx, 'columnIndex', value)}
+                                />
+                                <TextControl
+                                    label={__('Filter Value', 'results-list-linker-block')}
+                                    value={filter.filterValue}
+                                    onChange={(value) => updateFilter(idx, 'filterValue', value)}
+                                />
+                                <label style={{ display: 'block', marginTop: 4 }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={!!filter.isRange}
+                                        onChange={(e) => updateFilter(idx, 'isRange', e.target.checked)}
+                                    />{' '}
+                                    {__('Range', 'results-list-linker-block')}
+                                </label>
+                                <label style={{ display: 'block', marginTop: 4 }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={!!filter.isEscaped}
+                                        onChange={(e) => updateFilter(idx, 'isEscaped', e.target.checked)}
+                                    />{' '}
+                                    {__('Escaped', 'results-list-linker-block')}
+                                </label>
+                                <button type="button" onClick={() => removeFilter(idx)} style={{ marginTop: 4 }}>
+                                    {__('Remove', 'results-list-linker-block')}
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={addFilter} style={{ marginTop: 8 }}>
+                            {__('Add Filter', 'results-list-linker-block')}
+                        </button>
                     </PanelBody>
                 </InspectorControls>
                 <div {...blockProps}>
-                    <strong>{__('Results Block', 'tynevags-results-block')}</strong>
-                    <p>{__('Results will be rendered dynamically on the frontend.', 'tynevags-results-block')}</p>
+                    <strong>{__('Results Block', 'results-list-linker-block')}</strong>
+                    <p>{__('Results will be rendered dynamically on the frontend.', 'results-list-linker-block')}</p>
                 </div>
             </>
         );

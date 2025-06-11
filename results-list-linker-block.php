@@ -1,52 +1,55 @@
 <?php
 /*
-Plugin Name: Tynevags Results Block
-Description: WordPress block plugin for displaying race result links.
-Version: 0.1.4
+Plugin Name: Results List Linker Block
+Description: WordPress block plugin for displaying a list of results as links.
+Version: 0.1.5
 Author: Andrew Freemantle
 */
+
+// NOTE: The following code must be run within a WordPress environment.
+// If you see 'Undefined function' errors, ensure this file is loaded by WordPress.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 // Enqueue block assets
-function tynevags_results_block_enqueue_assets() {
+function results_list_linker_block_enqueue_assets() {
 	wp_enqueue_script(
-		'tynevags-results-block',
+		'results-list-linker-block',
 		plugins_url( 'build/index.js', __FILE__ ),
 		array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ),
 		'0.1.0',
 		true
 	);
 	wp_enqueue_style(
-		'tynevags-results-block-style',
+		'results-list-linker-block-style',
 		plugins_url( 'build/style-index.css', __FILE__ ),
 		array(),
 		'0.1.0'
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'tynevags_results_block_enqueue_assets' );
-add_action( 'enqueue_block_assets', 'tynevags_results_block_enqueue_assets' );
+add_action( 'enqueue_block_editor_assets', 'results_list_linker_block_enqueue_assets' );
+add_action( 'enqueue_block_assets', 'results_list_linker_block_enqueue_assets' );
 
 // Register block
-function tynevags_results_block_register() {
+function results_list_linker_block_register() {
 	register_block_type( __DIR__ . '/build', array(
-		'render_callback' => 'tynevags_results_block_render',
+		'render_callback' => 'results_list_linker_block_render',
 	) );
 }
-add_action( 'init', 'tynevags_results_block_register' );
+add_action( 'init', 'results_list_linker_block_register' );
 
 // Render callback for dynamic results block
-function tynevags_results_block_render( $attributes, $content ) {
+function results_list_linker_block_render( $attributes, $content ) {
 	global $wpdb;
 	$view = 'race_links_view';
 	$results = $wpdb->get_results( "SELECT * FROM $view ORDER BY date DESC" );
 	if ( empty( $results ) ) {
-		return '<div class="tynevags-results-block">No results found.</div>';
+		return '<div class="results-list-linker-block">No results found.</div>';
 	}
 
-	$output = '<div class="tynevags-results-block">';
+	$output = '<div class="results-list-linker-block">';
 	$current_year = null;
 	$latest = true;
 	foreach ( $results as $row ) {
@@ -55,7 +58,7 @@ function tynevags_results_block_render( $attributes, $content ) {
 			if ( $current_year !== null ) {
 				$output .= '</ul>';
 			}
-			$output .= '<h3 class="tynevags-results-block__year">' . esc_html( $year ) . '</h3><ul class="tynevags-results-block__list">';
+			$output .= '<h3 class="results-list-linker-block__year">' . esc_html( $year ) . '</h3><ul class="results-list-linker-block__list">';
 			$current_year = $year;
 		}
 
@@ -117,3 +120,4 @@ function tynevags_results_block_render( $attributes, $content ) {
 	$output .= '</ul></div>';
 	return $output;
 }
+?>
