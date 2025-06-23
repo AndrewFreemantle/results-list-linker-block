@@ -1,6 +1,6 @@
 {
   "name": "results-list-linker-block",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "WordPress block plugin for displaying a list of results as links.",
   "main": "build/index.js",
   "scripts": {
