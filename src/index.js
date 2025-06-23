@@ -124,6 +124,9 @@ registerBlockType('results-list-linker/results-block', {
                                         onChange={(e) => updateFilter(idx, 'isRange', e.target.checked)}
                                     />{' '}
                                     {__('Range', 'results-list-linker-block')}
+                                    <span style={{ display: 'block', fontSize: 'smaller', color: '#666', marginLeft: 24 }}>
+                                        {__('The table column is ranged, such as a date', 'results-list-linker-block')}
+                                    </span>
                                 </label>
                                 <label style={{ display: 'block', marginTop: 4 }}>
                                     <input
@@ -131,7 +134,10 @@ registerBlockType('results-list-linker/results-block', {
                                         checked={!!filter.isEscaped}
                                         onChange={(e) => updateFilter(idx, 'isEscaped', e.target.checked)}
                                     />{' '}
-                                    {__('Escaped', 'results-list-linker-block')}
+                                    {__('Escape this value', 'results-list-linker-block')} <em>{__('(recommended)', 'results-list-linker-block')}</em>
+                                    <span style={{ display: 'block', fontSize: 'smaller', color: '#666', marginLeft: 24 }}>
+                                        {__('ONLY un-check this if the value is already escaped or contains characters that shouldn\'t be escaped', 'results-list-linker-block')}
+                                    </span>
                                 </label>
                                 <button type="button" onClick={() => removeFilter(idx)} style={{ marginTop: 4 }}>
                                     {__('Remove', 'results-list-linker-block')}
