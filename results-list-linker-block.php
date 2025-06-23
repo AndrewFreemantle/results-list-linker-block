@@ -20,14 +20,14 @@ function results_list_linker_block_enqueue_assets() {
 		'results-list-linker-block',
 		plugins_url( 'build/index.js', __FILE__ ),
 		array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ),
-		'0.1.0',
+		'0.1.6',
 		true
 	);
 	wp_enqueue_style(
 		'results-list-linker-block-style',
 		plugins_url( 'build/style-index.css', __FILE__ ),
 		array(),
-		'0.1.0'
+		'0.1.6'
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'results_list_linker_block_enqueue_assets' );
