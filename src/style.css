@@ -1,3 +1,16 @@
 .results-list-linker-block { /* Container for the results list block */ }
+.results-list-linker-block__year-button-group {
+	/* Button group for year selection */
+	margin-bottom: 2rem;
+}
 .results-list-linker-block__year { /* Year heading for grouped results */ }
-.results-list-linker-block__list { /* List of result links for a year */ }
+.results-list-linker-block__list {
+	list-style: none;
+	padding-left: 2rem;
+}
+.results-list-linker-block__list .latest-heading {
+	/* Heading for the latest result */
+	font-weight: bold;
+	margin-right: 8px;
+	color: var(--nv-primary-accent)!important
+}

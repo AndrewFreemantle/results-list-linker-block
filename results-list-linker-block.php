@@ -14,6 +14,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+// Add WordPress escaping and permalink functions if not already loaded
+if ( ! function_exists( 'esc_html' ) ) {
+    require_once ABSPATH . 'wp-includes/formatting.php';
+}
+if ( ! function_exists( 'esc_attr' ) ) {
+    require_once ABSPATH . 'wp-includes/formatting.php';
+}
+if ( ! function_exists( 'get_permalink' ) ) {
+    require_once ABSPATH . 'wp-includes/link-template.php';
+}
+
 // Enqueue block assets
 function results_list_linker_block_enqueue_assets() {
 	wp_enqueue_script(
@@ -45,12 +56,21 @@ add_action( 'init', 'results_list_linker_block_register' );
 function results_list_linker_block_render( $attributes, $content ) {
 	global $wpdb;
 	$view = 'race_links_view';
-	$results = $wpdb->get_results( "SELECT * FROM $view ORDER BY date DESC" );
-	if ( empty( $results ) ) {
+	$years = $wpdb->get_results( "SELECT DISTINCT year FROM $view ORDER BY year DESC" );
+	if ( empty( $years ) ) {
 		return '<div class="results-list-linker-block">No results found.</div>';
 	}
+	$results = $wpdb->get_results( "SELECT * FROM $view ORDER BY date DESC" );
 
+	// Render button group
 	$output = '<div class="results-list-linker-block">';
+	$output .= '<div class="results-list-linker-block__year-button-group wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex">';
+	foreach ( $years as $row ) {
+		$year = $row->year;
+		$output .= '<div class="wp-block-button is-style-default"><a href="#results-year-' . esc_attr( $year ) . '" class="wp-block-button__link has-neve-link-color-color has-nv-light-bg-background-color has-text-color has-background has-link-color has-border-color has-neve-link-color-border-color has-medium-font-size has-custom-font-size wp-element-button" style="border-width:1px;padding-top:0;padding-right:var(--wp--preset--spacing--20);padding-bottom:0;padding-left:var(--wp--preset--spacing--20)">' . esc_html( $year ) . '</a></div>';
+	}
+	$output .= '</div>';
+
 	$current_year = null;
 	$latest = true;
 	foreach ( $results as $row ) {
@@ -59,7 +79,7 @@ function results_list_linker_block_render( $attributes, $content ) {
 			if ( $current_year !== null ) {
 				$output .= '</ul>';
 			}
-			$output .= '<h3 class="results-list-linker-block__year">' . esc_html( $year ) . '</h3><ul class="results-list-linker-block__list">';
+			$output .= '<h2 id="results-year-' . esc_attr( $year ) . '" class="results-list-linker-block__year">' . esc_html( $year ) . '</h2><ul class="results-list-linker-block__list">';
 			$current_year = $year;
 		}
 
@@ -113,7 +133,7 @@ function results_list_linker_block_render( $attributes, $content ) {
 		$link_text = date( 'jS M Y', strtotime( $row->date ) ) . ' - ' . esc_html( $row->distance ) . ' Mile ' . esc_html( $row->event_type ) . ' (' . esc_html( $row->course ) . ')';
 		$output .= '<li>';
 		if ( $latest ) {
-			$output .= '<strong>LATEST: </strong>';
+			$output .= '<span class="latest-heading">LATEST:</span>';
 			$latest = false;
 		}
 		$output .= '<a href="' . $link_url . '">' . esc_html( $link_text ) . '</a></li>';
