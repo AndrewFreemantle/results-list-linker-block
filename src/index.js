@@ -39,7 +39,7 @@ registerBlockType('results-list-linker/results-block', {
             []
         );
         const isLoadingPages = pages === undefined;
-        const pageOptions = isLoadingPages
+        const pageOptions = isLoadingPages || !Array.isArray(pages)
             ? [{ label: 'Loading...', value: '' }]
             : [
                 { label: 'Select a page', value: '' },
@@ -48,13 +48,25 @@ registerBlockType('results-list-linker/results-block', {
 
         const updateFilter = (index, field, value) => {
             const newFilters = [...filterPairs];
-            newFilters[index][field] = value;
+            if (field === 'columnIndex') {
+                newFilters[index][field] = value === '' ? 0 : parseInt(value, 10);
+            } else {
+                newFilters[index][field] = value;
+            }
             setFilterPairs(newFilters);
             setAttributes({ filters: newFilters });
         };
 
         const addFilter = () => {
-            const newFilters = [...filterPairs, { columnIndex: '', filterValue: '', isRange: false }];
+            const newFilters = [
+                ...filterPairs,
+                {
+                    columnIndex: 0, // Default to 0 to match integer type
+                    filterValue: '',
+                    isRange: false,
+                    isEscaped: true, // Always include isEscaped
+                },
+            ];
             setFilterPairs(newFilters);
             setAttributes({ filters: newFilters });
         };
@@ -76,7 +88,7 @@ registerBlockType('results-list-linker/results-block', {
                             onChange={(value) => setAttributes({ resultsPage: value })}
                         />
                         {/* Show link to selected page if available */}
-                        {!isLoadingPages && attributes.resultsPage && pages && pages.length > 0 && (() => {
+                        {!isLoadingPages && attributes.resultsPage && Array.isArray(pages) && pages.length > 0 && (() => {
                             const selectedPage = pages.find((page) => String(page.id) === String(attributes.resultsPage));
                             if (selectedPage && selectedPage.link) {
                                 return (
