@@ -2,7 +2,7 @@
 /*
 Plugin Name: Results List Linker Block
 Description: WordPress block plugin for displaying a list of results as links.
-Version: 0.1.7
+Version: 0.1.8
 Author: Andrew Freemantle
 Author URI: https://github.com/AndrewFreemantle/results-list-linker-block
 */
@@ -130,7 +130,7 @@ function results_list_linker_block_render( $attributes, $content ) {
 			$link_url .= ( strpos( $results_page_url, '?' ) === false ? '?' : '&' ) . $query_string;
 		}
 
-		$link_text = date( 'jS M Y', strtotime( $row->date ) ) . ' - ' . esc_html( $row->distance ) . ' Mile ' . esc_html( $row->event_type ) . ' (' . esc_html( $row->course ) . ')';
+		$link_text = date( 'jS M Y', strtotime( $row->date ) ) . ' - ' . esc_html( $row->miles ) . ' Mile ' . esc_html( $row->event_type ) . ' (' . esc_html( $row->course ) . ')';
 		$output .= '<li>';
 		if ( $latest ) {
 			$output .= '<span class="latest-heading">LATEST:</span>';

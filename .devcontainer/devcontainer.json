@@ -11,7 +11,8 @@
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "mechatroner.rainbow-csv"
       ]
     }
   }

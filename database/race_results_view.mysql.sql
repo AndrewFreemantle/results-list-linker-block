@@ -1,16 +1,36 @@
 CREATE
 OR REPLACE VIEW `race_results_view` AS
 SELECT
-  `wp_race_results`.`position` AS `rank`,
-  `wp_race_results`.`name` AS `name`,
-  cast(substr (`wp_race_results`.`time`, 2) as time) AS `time`,  /* strip the leading 'T' and convert to time */
-  `wp_race_results`.`type` AS `type`,
-  `wp_race_results`.`club` AS `club`,
-  `wp_race_results`.`classification` AS `classification`,
-  `wp_race_results`.`cat` AS `cat`,
-  `wp_race_results`.`mph` AS `mph`,
-  str_to_date (`wp_race_results`.`date`, '%Y%m%d') AS `date`,
-  `wp_race_results`.`course` AS `course`,
-  `wp_race_results`.`event_type` AS `event_type`
+  `position` AS `position`,
+  `name` AS `name`,
+  cast(substring(`time`, 2) as time) AS `time`,  /* strip the leading 'T' and convert to time */
+  `bike` AS `bike`,
+  `club` AS `club`,
+  `class` AS `class`,
+  `age_category` AS `age_category`,
+  str_to_date (`date`, '%Y-%m-%d') AS `date`,
+  `course` AS `course`,
+  CASE
+    WHEN `standard` LIKE 'T%' THEN cast(substring(`standard`, 2) as time)  /* strip the leading 'T' and convert to time */
+    ELSE NULL
+  END AS `standard`,
+  `mph` AS `mph`,
+  `miles` AS `miles`
+FROM
+  `wp_race_results_2025`
+UNION
+SELECT
+  `position`,
+  `name`,
+  cast(substring(`time`, 2) as time) AS `time`,  /* strip the leading 'T' and convert to time */
+  `type` AS `bike`,
+  `club` AS `club`,
+  `classification` AS `class`,
+  `cat` AS `age_category`,
+  str_to_date (`date`, '%Y%m%d') AS `date`,
+  `course` AS `course`,
+  `standard` AS `standard`,
+  `mph` AS `mph`,
+  `distance` AS `miles`
 FROM
   `wp_race_results`;
