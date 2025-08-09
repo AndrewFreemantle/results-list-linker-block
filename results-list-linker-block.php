@@ -2,7 +2,7 @@
 /*
 Plugin Name: Results List Linker Block
 Description: WordPress block plugin for displaying a list of results as links.
-Version: 0.1.8
+Version: 0.2.0
 Author: Andrew Freemantle
 Author URI: https://github.com/AndrewFreemantle/results-list-linker-block
 */
@@ -31,14 +31,14 @@ function results_list_linker_block_enqueue_assets() {
 		'results-list-linker-block',
 		plugins_url( 'build/index.js', __FILE__ ),
 		array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ),
-		'0.1.6',
+		'0.2.0',
 		true
 	);
 	wp_enqueue_style(
 		'results-list-linker-block-style',
 		plugins_url( 'build/style-index.css', __FILE__ ),
 		array(),
-		'0.1.6'
+		'0.2.0'
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'results_list_linker_block_enqueue_assets' );
@@ -56,13 +56,31 @@ add_action( 'init', 'results_list_linker_block_register' );
 function results_list_linker_block_render( $attributes, $content ) {
 	global $wpdb;
 	$view = 'race_links_view';
+	$competition_view = 'competition_results_view';
 	$years = $wpdb->get_results( "SELECT DISTINCT year FROM $view ORDER BY year DESC" );
 	if ( empty( $years ) ) {
 		return '<div class="results-list-linker-block">No results found.</div>';
 	}
 	$results = $wpdb->get_results( "SELECT * FROM $view ORDER BY date DESC" );
+	$competition_results = $wpdb->get_results( "SELECT DISTINCT year FROM $competition_view ORDER BY year DESC" );
 
-	// Render button group
+	// Use selected results and competition pages or fallback to current permalink
+	$results_page_url = '';
+	if ( ! empty( $attributes['resultsPage'] ) ) {
+		$results_page_url = get_permalink( $attributes['resultsPage'] );
+	}
+	if ( ! $results_page_url ) {
+		$results_page_url = get_permalink();
+	}
+	$competition_page_url = '';
+	if ( ! empty( $attributes['competitionPage'] ) ) {
+		$competition_page_url = get_permalink( $attributes['competitionPage'] );
+	}
+	if ( ! $competition_page_url ) {
+		$competition_page_url = get_permalink();
+	}
+
+	// Render a button group, a button for each year we have race results for to jump to a specific year on the page
 	$output = '<div class="results-list-linker-block">';
 	$output .= '<div class="results-list-linker-block__year-button-group wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex">';
 	foreach ( $years as $row ) {
@@ -80,20 +98,26 @@ function results_list_linker_block_render( $attributes, $content ) {
 				$output .= '</ul>';
 			}
 			$output .= '<h2 id="results-year-' . esc_attr( $year ) . '" class="results-list-linker-block__year">' . esc_html( $year ) . '</h2><ul class="results-list-linker-block__list">';
+
+			// Add a link for the current year's competition results, if there are any
+			if ( ! empty( $competition_results ) && in_array( $year, wp_list_pluck( $competition_results, 'year' ) ) ) {
+				$output .= '<li id="competition-year-' . esc_attr( $year ) . '" class="results-list-linker-block__competition-results"><a class="competition-link" href="' . $competition_page_url . '?wdt_var1=' . esc_attr( $year ) . '">Competition Results</a> (Veterans on Standard, Best All-Rounder)</li>';
+			}
+
 			$current_year = $year;
 		}
 
-		// Build filter params from block attributes
+		// Build filter params from block attributes for each race result
 		$filter_params = array();
 		if ( ! empty( $attributes['filters'] ) && is_array( $attributes['filters'] ) ) {
 			foreach ( $attributes['filters'] as $filter ) {
 				$col = isset($filter['columnIndex']) ? $filter['columnIndex'] : '';
 				$val_key = isset($filter['filterValue']) ? $filter['filterValue'] : '';
-				$isEscaped = isset($filter['isEscaped']) ? $filter['isEscaped'] : true;
+				$is_escaped = isset($filter['isEscaped']) ? $filter['isEscaped'] : true;
 				$is_range = !empty($filter['isRange']);
 
 				if ( $col && $val_key && isset($row->{$val_key}) ) {
-					if ( $isEscaped ) {
+					if ( $is_escaped ) {
 						$value = rawurlencode( $row->{$val_key} );
 					} else {
 						$value = $row->{$val_key};
@@ -105,15 +129,6 @@ function results_list_linker_block_render( $attributes, $content ) {
 					$filter_params[ intval($col) ] = $value;
 				}
 			}
-		}
-
-		// Use selected results page or fallback to current permalink
-		$results_page_url = '';
-		if ( ! empty( $attributes['resultsPage'] ) ) {
-			$results_page_url = get_permalink( $attributes['resultsPage'] );
-		}
-		if ( ! $results_page_url ) {
-			$results_page_url = get_permalink();
 		}
 
 		// Build the query string manually to avoid encoding square brackets

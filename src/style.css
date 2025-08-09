@@ -8,6 +8,13 @@
 	list-style: none;
 	padding-left: 2rem;
 }
+
+.results-list-linker-block__competition-results .competition-link {
+	/* Heading for the yearly compeition results link */
+	font-weight: bold;
+	text-decoration-line: underline;
+}
+
 .results-list-linker-block__list .latest-heading {
 	/* Heading for the latest result */
 	font-weight: bold;

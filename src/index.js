@@ -13,6 +13,7 @@ registerBlockType('results-list-linker/results-block', {
     icon: 'awards',
     category: 'widgets',
     attributes: {
+        competitionPage: { type: 'string', default: '' },
         resultsPage: { type: 'string', default: '' },
         filters: {
             type: 'array',
@@ -80,6 +81,29 @@ registerBlockType('results-list-linker/results-block', {
         return (
             <>
                 <InspectorControls>
+                    <PanelBody title={__('Block Settings', 'results-list-linker-block')} initialOpen={true}>
+                        <SelectControl
+                            label={__('Competition Page', 'results-list-linker-block')}
+                            value={attributes.competitionPage}
+                            options={pageOptions}
+                            onChange={(value) => setAttributes({ competitionPage: value })}
+                        />
+                        {/* Show link to selected page if available */}
+                        {!isLoadingPages && attributes.competitionPage && Array.isArray(pages) && pages.length > 0 && (() => {
+                            const selectedPage = pages.find((page) => String(page.id) === String(attributes.competitionPage));
+                            if (selectedPage && selectedPage.link) {
+                                return (
+                                    <div>
+                                        <a href={selectedPage.link} target="_blank" style={{ display: 'flex', justifyContent: 'space-between' }} rel="noopener noreferrer">
+                                            {__('Open competition results page in a new tab', 'results-list-linker-block')}
+                                            <span class="dashicons dashicons-external"></span>
+                                        </a>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })()}
+                    </PanelBody>
                     <PanelBody title={__('Block Settings', 'results-list-linker-block')} initialOpen={true}>
                         <SelectControl
                             label={__('Results Page', 'results-list-linker-block')}
