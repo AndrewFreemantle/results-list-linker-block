@@ -16,13 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Add WordPress escaping and permalink functions if not already loaded
 if ( ! function_exists( 'esc_html' ) ) {
-    require_once ABSPATH . 'wp-includes/formatting.php';
+		require_once ABSPATH . 'wp-includes/formatting.php';
 }
 if ( ! function_exists( 'esc_attr' ) ) {
-    require_once ABSPATH . 'wp-includes/formatting.php';
+		require_once ABSPATH . 'wp-includes/formatting.php';
 }
 if ( ! function_exists( 'get_permalink' ) ) {
-    require_once ABSPATH . 'wp-includes/link-template.php';
+		require_once ABSPATH . 'wp-includes/link-template.php';
 }
 
 // Enqueue block assets
@@ -79,6 +79,12 @@ function results_list_linker_block_render( $attributes, $content ) {
 	if ( ! $competition_page_url ) {
 		$competition_page_url = get_permalink();
 	}
+	$competition_results_anchors = [
+		"veterans-on-standard" => "Veterans on Standard",
+		"short-distance-best-all-rounder-3-rides" => "Best All-Rounder: 3 Rides",
+		"short-distance-best-all-rounder-2-rides" => "2 Rides",
+		"short-distance-best-all-rounder-1-ride" => "1 Ride"
+	];
 
 	// Render a button group, a button for each year we have race results for to jump to a specific year on the page
 	$output = '<div class="results-list-linker-block">';
@@ -99,9 +105,18 @@ function results_list_linker_block_render( $attributes, $content ) {
 			}
 			$output .= '<h2 id="results-year-' . esc_attr( $year ) . '" class="results-list-linker-block__year">' . esc_html( $year ) . '</h2><ul class="results-list-linker-block__list">';
 
-			// Add a link for the current year's competition results, if there are any
+			// Add links for the current year's competition results, if there are any
 			if ( ! empty( $competition_results ) && in_array( $year, wp_list_pluck( $competition_results, 'year' ) ) ) {
-				$output .= '<li id="competition-year-' . esc_attr( $year ) . '" class="results-list-linker-block__competition-results"><a class="competition-link" href="' . $competition_page_url . '?wdt_var1=' . esc_attr( $year ) . '">Competition Results</a> (Veterans on Standard, Best All-Rounder)</li>';
+				$compeition_page_url_with_year = $competition_page_url . '?wdt_var1=' . esc_attr( $year );
+
+				$output .= '<li id="competition-year-' . esc_attr( $year ) . '" class="results-list-linker-block__competition-results"><a class="competition-link" href="' . $compeition_page_url_with_year . '">Competition Results</a> (';
+
+				$competition_anchor_links = [];
+				foreach ($competition_results_anchors as $anchor => $text) {
+					$competition_anchor_links[] =  '<a class="competition-link-anchor" href="' . $compeition_page_url_with_year . '#' . rawurlencode($anchor) . '">' . esc_html($text) . '</a>';
+				}
+
+				$output .= implode(', ', $competition_anchor_links) . ')</li>';
 			}
 
 			$current_year = $year;
