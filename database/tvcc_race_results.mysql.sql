@@ -4,7 +4,7 @@
   Structure matches the export produced by Nick Wild
 */
 
-CREATE TABLE `wp_race_results` (
+CREATE TABLE `tvcc_race_results` (
   `name` varchar(255) DEFAULT NULL,
   `time` varchar(255) DEFAULT NULL,
   `age` int DEFAULT NULL,

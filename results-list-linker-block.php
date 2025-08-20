@@ -2,7 +2,7 @@
 /*
 Plugin Name: Results List Linker Block
 Description: WordPress block plugin for displaying a list of results as links.
-Version: 0.2.2
+Version: 0.2.3
 Author: Andrew Freemantle
 Author URI: https://github.com/AndrewFreemantle/results-list-linker-block
 */
@@ -80,10 +80,13 @@ function results_list_linker_block_render( $attributes, $content ) {
 		$competition_page_url = get_permalink();
 	}
 	$competition_results_anchors = [
-		"veterans-on-standard" => "Veterans on Standard",
+		"veterans-on-standard" => "Vets on Standard",
 		"short-distance-best-all-rounder-3-rides" => "Best All-Rounder: 3 Rides",
 		"short-distance-best-all-rounder-2-rides" => "2 Rides",
-		"short-distance-best-all-rounder-1-ride" => "1 Ride"
+		"short-distance-best-all-rounder-1-ride" => "1 Ride",
+		"short-distance-best-all-rounder-on-standard-3-rides" => "Best All-Rounder on Standard: 3 Rides",
+		"short-distance-best-all-rounder-on-standard-2-rides" => "2 Rides",
+		"short-distance-best-all-rounder-on-standard-1-ride" => "1 Ride"
 	];
 
 	// Render a button group, a button for each year we have race results for to jump to a specific year on the page

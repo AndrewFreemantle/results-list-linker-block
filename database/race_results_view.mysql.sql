@@ -17,7 +17,7 @@ SELECT
   `mph` AS `mph`,
   `miles` AS `miles`
 FROM
-  `wp_race_results_2025`
+  `tvcc_race_results_2025`
 UNION
 SELECT
   `position`,
@@ -33,4 +33,4 @@ SELECT
   `mph` AS `mph`,
   `distance` AS `miles`
 FROM
-  `wp_race_results`;
+  `tvcc_race_results`;
